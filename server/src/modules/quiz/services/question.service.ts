@@ -11,19 +11,21 @@ export class QuestionService {
     constructor(@InjectRepository(QuestionRepository)
     private questionRepository: QuestionRepository) { }
 
-    async createQuestion(
-        quest: CreateQuestionDto,
-        quiz: Quiz
-    ): Promise<Question> {
-        const newQuestion = await this.questionRepository.save({
-            question: quest.question
-        });
+    async createQuestion(question: CreateQuestionDto, quiz: Quiz): Promise<Question> {
 
+        const newQuestion = await this.questionRepository.save({
+
+            question: question.question
+        });
 
         quiz.questions = [...quiz.questions, newQuestion];
         await quiz.save();
 
         return newQuestion;
 
+    }
+
+    async findQuestionById(id: number): Promise<Question> {
+        return await this.questionRepository.findOne(id, { relations: ['quiz', 'options'] })
     }
 }
