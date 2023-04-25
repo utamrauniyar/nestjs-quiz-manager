@@ -3,10 +3,11 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { QuizModule } from './modules/quiz/quiz.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { typeOrmConfig } from './config/typeormConfig';
+import { typeOrmConfigAsync } from './config/typeorm.config';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [QuizModule, TypeOrmModule.forRoot(typeOrmConfig)],
+  imports: [QuizModule, ConfigModule.forRoot(), TypeOrmModule.forRootAsync(typeOrmConfigAsync)],
   controllers: [AppController],
   providers: [AppService],
 })
