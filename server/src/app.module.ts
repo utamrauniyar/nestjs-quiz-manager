@@ -5,10 +5,15 @@ import { QuizModule } from './modules/quiz/quiz.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeOrmConfigAsync } from './config/typeorm.config';
 import { ConfigModule } from '@nestjs/config';
+import { UserModule } from './modules/user/user.module';
 
 @Module({
-  imports: [QuizModule, ConfigModule.forRoot(), TypeOrmModule.forRootAsync(typeOrmConfigAsync)],
+  imports: [ConfigModule.forRoot(), TypeOrmModule.forRootAsync(typeOrmConfigAsync),
+    QuizModule,
+    UserModule],
+
   controllers: [AppController],
   providers: [AppService],
 })
+
 export class AppModule { }
