@@ -11,7 +11,6 @@ export class OptionController {
         private questionService: QuestionService
     ) { }
 
-
     @Post('')
     @UsePipes(ValidationPipe)
     async saveOptionToQuestion(@Body() createOption: CreateOptionDto) {

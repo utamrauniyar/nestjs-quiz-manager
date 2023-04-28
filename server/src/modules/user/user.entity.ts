@@ -1,23 +1,29 @@
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, CreateDateColumn, UpdateDateColumn, BeforeInsert } from 'typeorm';
 import * as bcrypt from 'bcrypt'
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity({ name: 'users' })
 export class User extends BaseEntity {
+    @ApiProperty({ description: 'Id is UUID' })
     @PrimaryGeneratedColumn()
     id: number;
 
+    @ApiProperty({ description: 'Name of the user' })
     @Column()
     name: string;
 
     @Column({ unique: true })
     email: string;
 
+    @ApiProperty({ description: 'Hashed user password' })
     @Column()
     password: string;
 
+    @ApiProperty({ description: 'When user was created' })
     @CreateDateColumn()
     createdAt: Date
 
+    @ApiProperty({ description: 'When user was updated' })
     @UpdateDateColumn()
     updatedAt: Date
 

@@ -8,13 +8,14 @@ import { Quiz } from "../entites/quiz.entity";
 
 @Injectable()
 export class QuestionService {
-    constructor(@InjectRepository(QuestionRepository)
-    private questionRepository: QuestionRepository) { }
+    constructor(
+        @InjectRepository(QuestionRepository)
+        private questionRepository: QuestionRepository
+    ) { }
 
     async createQuestion(question: CreateQuestionDto, quiz: Quiz): Promise<Question> {
 
         const newQuestion = await this.questionRepository.save({
-
             question: question.question
         });
 
@@ -22,7 +23,6 @@ export class QuestionService {
         await quiz.save();
 
         return newQuestion;
-
     }
 
     async findQuestionById(id: number): Promise<Question> {
