@@ -5,30 +5,73 @@ import {
 } from "@nestjs/typeorm";
 
 
-export default class TypeOrmConfig {
-    static getOrmConfig(configService: ConfigService): TypeOrmModuleOptions {
+export const typeOrmAsyncConfig: TypeOrmModuleAsyncOptions = {
+    useFactory: async (): Promise<TypeOrmModuleOptions> => {
         return {
             type: 'postgres',
-            host: configService.get('DB_HOST'),
-            port: configService.get('DB_PORT'),
-            username: configService.get('DB_USERNAME'),
-            password: configService.get('DB_PASSWORD'),
-            database: configService.get('DB_NAME'),
+            host: process.env.DB_HOST,
+            port: parseInt(process.env.DB_PORT),
+            username: process.env.DB_USERNAME,
+            password: process.env.DB_PASSWORD,
+            database: process.env.DB_NAME,
             entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-            synchronize: true,
+            migrations: [__dirname + '/../database/migration/*{.ts,.js'],
+            cli: {
+                migrationsDir: __dirname + '/../database/migrations'
+            },
+            extra: {
+                charset: 'utf8mb4_unicode_ci'
+            },
+            synchronize: false,
             logging: true
-        };
+        }
     }
+};
+
+export const typeOrmConfig: TypeOrmModuleOptions = {
+    type: 'postgres',
+    host: process.env.DB_HOST,
+    port: parseInt(process.env.DB_PORT),
+    username: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    entities: [__dirname + '/../**/*.entity{.ts,.js}'],
+    migrations: [__dirname + '/../database/migration/*{.ts,.js'],
+    cli: {
+        migrationsDir: __dirname + '/../database/migrations'
+    },
+    extra: {
+        charset: 'utf8mb4_unicode_ci'
+    },
+    synchronize: false,
+    logging: true
 }
 
-export const typeOrmConfigAsync: TypeOrmModuleAsyncOptions = {
 
-    imports: [ConfigModule],
+// export default class TypeOrmConfig {
+//     static getOrmConfig(configService: ConfigService): TypeOrmModuleOptions {
+//         return {
+//             type: 'postgres',
+//             host: process.env.DB_HOST'),
+//             port: process.env.DB_PORT'),
+//             username: process.env.DB_USERNAME'),
+//             password: process.env.DB_PASSWORD'),
+//             database: process.env.DB_NAME'),
+//             entities: [__dirname + '/../**/*.entity{.ts,.js}'],
+//             synchronize: true,
+//             logging: true
+//         };
+//     }
+// }
 
-    useFactory: async (
-        configService: ConfigService
-    ): Promise<TypeOrmModuleOptions> =>
-        TypeOrmConfig.getOrmConfig(configService),
+// export const typeOrmConfigAsync: TypeOrmModuleAsyncOptions = {
 
-    inject: [ConfigService]
-}
+//     imports: [ConfigModule],
+
+//     useFactory: async (
+//         configService: ConfigService
+//     ): Promise<TypeOrmModuleOptions> =>
+//         TypeOrmConfig.getOrmConfig(configService),
+
+//     inject: [ConfigService]
+// }
