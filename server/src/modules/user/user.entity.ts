@@ -4,14 +4,18 @@ import { ApiProperty } from '@nestjs/swagger';
 
 @Entity({ name: 'users' })
 export class User extends BaseEntity {
-    @ApiProperty({ description: 'Id is UUID' })
+    @ApiProperty({ description: 'Primary key as User ID', example: 1 })
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ApiProperty({ description: 'Name of the user' })
+    @ApiProperty({ description: 'User name', example: 'Jhon Doe' })
     @Column()
     name: string;
 
+    @ApiProperty({
+        description: 'User email address',
+        example: 'jamy@gmail.com',
+    })
     @Column({ unique: true })
     email: string;
 

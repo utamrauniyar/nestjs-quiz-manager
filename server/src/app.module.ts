@@ -14,8 +14,8 @@ import { AuthModule } from './modules/auth/auth.module';
     TypeOrmModule.forRootAsync(typeOrmAsyncConfig),
     QuizModule,
     UserModule,
-    AuthModule],
-
+    AuthModule
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

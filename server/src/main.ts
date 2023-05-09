@@ -7,6 +7,7 @@ async function bootstrap() {
   // app.enableCors();
 
   const config = new DocumentBuilder()
+    .addBearerAuth()
     .setTitle('Quiz Manager API')
     .setDescription('Quiz Manager API Description')
     .setVersion('1.0')

@@ -1,25 +1,58 @@
-import { Body, Controller, Get, HttpCode, Param, ParseIntPipe, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    DefaultValuePipe,
+    Get,
+    HttpCode,
+    Param,
+    ParseIntPipe,
+    Post,
+    Query,
+    UseGuards,
+    UsePipes,
+    ValidationPipe
+} from '@nestjs/common';
 import { QuizService } from '../services/quiz.service';
 import { CreateQuizDto } from '../dto/createQuiz.dto';
-import { Quiz } from '../entites/quiz.entity';
-import { ApiTags } from '@nestjs/swagger';
+import { Quiz } from '../entities/quiz.entity';
+import {
+    ApiCreatedResponse,
+    ApiOkResponse,
+    ApiSecurity,
+    ApiTags
+} from '@nestjs/swagger';
+import { ApiPaginatedResponse } from 'src/common/decorator/api_pagination.response';
+import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
+import { JwtAuthGuard } from 'src/modules/auth/jwt-auth.guard';
 
+@ApiSecurity('bearer')
+@UseGuards(JwtAuthGuard)
 @ApiTags('Quiz')
 @Controller('quiz')
 export class QuizController {
     constructor(private quizService: QuizService) { }
 
     @Get('/')
-    async getAllQuiz(): Promise<Quiz[]> {
-        return await this.quizService.getAllQuiz()
+    @ApiPaginatedResponse({ model: Quiz, description: 'List of quizes' })
+    async getAllQuiz(
+        @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
+        @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number = 1,
+    ): Promise<Pagination<Quiz>> {
+        const options: IPaginationOptions = {
+            limit,
+            page,
+        }
+        return await this.quizService.paginate(options)
     }
 
     @Get('/:id')
+    @ApiOkResponse({ description: 'Get a quiz by id', type: Quiz })
     async getQuizById(@Param('id', ParseIntPipe) id: number): Promise<Quiz> {
         return await this.quizService.getQuizById(id)
     }
 
-    @HttpCode(200)
+    // @HttpCode(200)
+    @ApiCreatedResponse({ description: 'The quiz that got created', type: Quiz })
     @UsePipes(ValidationPipe)
     @Post('/create')
     async createQuiz(@Body() quizData: CreateQuizDto) {
