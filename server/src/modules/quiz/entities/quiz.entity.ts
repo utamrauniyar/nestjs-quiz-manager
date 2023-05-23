@@ -18,7 +18,7 @@ export class Quiz extends BaseEntity {
 
     @ApiProperty({
         description: 'Title of the quiz',
-        example: 'Sample Laravel quiz',
+        example: 'Sample Nest quiz',
     })
     @Column({ type: 'varchar' })
     title: string

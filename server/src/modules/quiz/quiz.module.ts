@@ -10,6 +10,8 @@ import { OptionRepository } from './repositories/option.repository';
 import { OptionController } from './controllers/option.controller';
 import { OptionService } from './services/option.service';
 import { UserModule } from '../user/user.module';
+import { ResponseController } from './controllers/response.controller';
+import { ResponseService } from './services/response.service';
 
 @Module({
   imports: [
@@ -25,12 +27,14 @@ import { UserModule } from '../user/user.module';
   controllers: [
     QuizController,
     QuestionControlller,
-    OptionController
+    OptionController,
+    ResponseController
   ],
   providers: [
     QuizService,
     QuestionService,
-    OptionService
+    OptionService,
+    ResponseService
   ]
 })
 

@@ -8,6 +8,9 @@ import {
     Pagination,
     paginate
 } from 'nestjs-typeorm-paginate';
+import { OnEvent } from '@nestjs/event-emitter';
+import { events } from 'src/common/constants/event.constants';
+import { ResponseAddEvent } from '../events/response-add.event';
 
 @Injectable()
 export class QuizService {
@@ -40,5 +43,11 @@ export class QuizService {
 
     async createNewQuiz(quiz: CreateQuizDto) {
         return await this.quizRepository.save(quiz)
+    }
+
+    @OnEvent(events.RESPONSE_SUBMITTED)
+    checkQuizCompleted(payload: ResponseAddEvent) {
+        console.log('checkCompleted', payload);
+
     }
 }
